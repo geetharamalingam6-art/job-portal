@@ -51,8 +51,12 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://your-frontend-name.onrender.com",
+    origin.strip()
+    for origin in os.environ.get(
+        'DJANGO_CORS_ALLOWED_ORIGINS',
+        'http://localhost:5173',
+    ).split(',')
+    if origin.strip()
 ]
 
 # Application definition
