@@ -16,6 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,7 +25,21 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+
+def api_root(request):
+    return JsonResponse({
+        'message': 'Job Portal API is running.',
+        'endpoints': {
+            'jobs': '/api/jobs/',
+            'register': '/api/register/',
+            'token': '/api/token/',
+            'token_refresh': '/api/token/refresh/',
+        },
+    })
+
+
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

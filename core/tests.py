@@ -7,8 +7,18 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import SimpleTestCase
 
 from .models import Application, Job, Resume
+
+
+class ApiRootTests(SimpleTestCase):
+    def test_api_root_returns_available_endpoints(self):
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['message'], 'Job Portal API is running.')
+        self.assertEqual(response.json()['endpoints']['jobs'], '/api/jobs/')
 
 
 class ResumeAndApplicationApiTests(APITestCase):
